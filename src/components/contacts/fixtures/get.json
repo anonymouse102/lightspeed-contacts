@@ -1,0 +1,13 @@
+{ 
+    "id" : "1",
+    "name" : "Some name",
+    "job_title" : "Job title",
+    "address" : "123 Fake St.",
+    "emails" : [
+        "anemail@email.com"
+    ],
+    "phone_numbers" : [
+        "+11234567890"
+    ],
+    "picture_url" : "http://example.com/example.jpg"
+}

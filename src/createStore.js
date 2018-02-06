@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 import { reducer as contactReducer } from './components/contacts';
-// import { reducer as uiReducer }
+
 const middleware = [
   thunk
 ];

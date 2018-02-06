@@ -45,8 +45,6 @@ export default createReducer(InitialState, {
     state.updateIn(['items'], contacts => 
       contacts.push(new Contact({id, ...payload}))),
 
-  // [actions.CONTACT_ADD_ERROR] 
-
   [actions.CONTACT_UPDATE_SUCCESS] : (state, { payload, id }) =>
     updateContact(state, id, contact => contact.merge(payload)),
 

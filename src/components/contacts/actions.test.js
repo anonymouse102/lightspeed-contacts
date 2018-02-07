@@ -17,10 +17,10 @@ describe('contacts actions', () => {
   });
 
   it('creates CONTACTS_FETCH_SUCCESS when fetching contacts has been done', async () => {
-    fetchMock.getOnce('/contacts', { data: [{ name : 'Some name'}] });
+    fetchMock.getOnce('/contacts?filter=', { data: [{ name : 'Some name'}] });
 
     const expectedActions = [
-      { type: actions.CONTACTS_FETCH },
+      { type: actions.CONTACTS_FETCH, filter : '' },
       { type: actions.CONTACTS_FETCH_SUCCESS, payload : { contacts : [{ name : 'Some name'}] }}
     ];
 

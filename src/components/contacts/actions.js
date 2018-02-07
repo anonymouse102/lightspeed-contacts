@@ -22,9 +22,11 @@ export const CONTACT_DELETE_ERROR = 'CONTACT_DELETE_ERROR';
 export const CONTACT_DELETE_SUCCESS = 'CONTACT_DELETE_SUCCESS';
 
 export const VIEW_CONTACT = 'VIEW_CONTACT';
+export const CREATING_CONTACT = 'CREATING_CONTACT';
+export const NOT_CREATING_CONTACT = 'NOT_CREATING_CONTACT'; // i know this is silly, but this is taking too long
 
 export const fetchContacts = (filter = '') => async (dispatch) => {
-  dispatch({ type : CONTACTS_FETCH });
+  dispatch({ type : CONTACTS_FETCH, filter });
 
   try {
     const response = await fetch(`/contacts?filter=${filter}`);
@@ -66,13 +68,14 @@ export const getContact = (id) => async (dispatch) => {
 export const addContact = (payload) => async (dispatch) => {
   dispatch({ type : CONTACT_ADD, payload });
 
-  const body = new FormData();
-  body.append('json', JSON.stringify(payload));
-
   try {
     const response = await fetch('/contacts', {
       method : 'POST',
-      body
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      }),
+      body : JSON.stringify(payload)
     });
 
     const data = await response.json();
@@ -100,13 +103,14 @@ export const addContact = (payload) => async (dispatch) => {
 export const updateContact = (id, payload) => async (dispatch) => {
   dispatch({ type : CONTACT_UPDATE, id, payload });
 
-  const body = new FormData();
-  body.append('json', JSON.stringify(payload));
-
   try {
     const response = await fetch(`/contacts/${id}`, {
       method : 'PATCH',
-      body
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      }),
+      body : JSON.stringify(payload)
     });
 
     const data = await response.json();
@@ -165,4 +169,8 @@ export const deleteContact = (id) => async (dispatch) => {
 export const viewContact = (id) => ({
   type : VIEW_CONTACT,
   payload : { id }
+});
+
+export const createContact = (creating = true) => ({
+  type : creating ? CREATING_CONTACT : NOT_CREATING_CONTACT
 });

@@ -4,8 +4,10 @@ import { createReducer } from '../../utils';
 
 export const InitialState = Record({
   items : new List(),
+  activeFilter : '',
   isFetching : false,
-  selectedContact : null
+  selectedContact : null,
+  creatingContact : false
 });
 
 export const Contact = Record({
@@ -29,7 +31,7 @@ function updateContact(state, id, updater) {
 }
 
 export default createReducer(InitialState, {
-  [actions.CONTACTS_FETCH] : (state) => state.set('isFetching', true),
+  [actions.CONTACTS_FETCH] : (state, { filter }) => state.set('isFetching', true).set('activeFilter', filter),
   [actions.CONTACTS_FETCH_ERROR] : (state) => state.set('isFetching', false),
   [actions.CONTACTS_FETCH_SUCCESS] : (state, { payload }) => {
     const newContacts = payload.contacts.map(contact => new Contact(contact));
@@ -45,8 +47,8 @@ export default createReducer(InitialState, {
     state.updateIn(['items'], contacts => 
       contacts.push(new Contact({id, ...payload}))),
 
-  [actions.CONTACT_UPDATE_SUCCESS] : (state, { payload, id }) =>
-    updateContact(state, id, contact => contact.merge(payload)),
+  [actions.CONTACT_UPDATE_SUCCESS] : (state, { payload, id }) => // Contact.merge causes array values to become lists. we don't want that.
+    updateContact(state, id, contact => new Contact(Object.assign(contact.toJS(), payload))),
 
   [actions.CONTACT_DELETE_SUCCESS] : (state, { id }) =>
     state.updateIn(['items'], contacts =>
@@ -55,6 +57,11 @@ export default createReducer(InitialState, {
   [actions.VIEW_CONTACT] : (state, { payload }) => 
     state.set('selectedContact', payload.id),
 
+  [actions.CREATING_CONTACT] : (state) => 
+    state.set('creatingContact', true),
+
+  [actions.NOT_CREATING_CONTACT] : (state) => 
+    state.set('creatingContact', false),
   // TODO make use of the other actions, we can use them to animate the front-end
   // and log errors
 });

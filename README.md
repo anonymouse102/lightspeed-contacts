@@ -13,6 +13,6 @@ If I were to continue, I would want to make sure errors were pushed to the user,
  * GET /contacts - Fetch list of contacts
  * GET /contacts/:id - Get a single contact
  * POST /contacts - Add new contact
- * PUT /contacts/:id - Update a contact
+ * PATCH /contacts/:id - Update a contact
  * DELETE /contacts/:id - Delete a contact
 
